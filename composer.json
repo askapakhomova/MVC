@@ -1,0 +1,13 @@
+
+{
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/", "Core\\": "scr/"
+    }
+  },
+  "require": {
+    "ext-mbstring": "*",
+    "twig/twig": "^3.0",
+    "ext-json": "*"
+  }
+}
