@@ -1,0 +1,73 @@
+
+<style>
+    .message { margin: 5px 0 0 5px; border: 1px solid grey; width: 850px; min-height: 100px;}
+    .author { margin-left: 10px; }
+    .text1 { padding-left: 1px; padding-top: 1px; width: 250px; height: 50px; }
+    .image1 { padding-left: 1px; padding-top: 1px; width: 250px; height: 50px; }
+    .admin a { color: #46468b; float: right; padding-right: 15px; }
+</style>
+
+<script src="/js/jquery.js">
+
+</script>
+
+<?php
+/** @var App\Model\Eloquent\User $user  */
+/** @var App\Model\Eloquent\Message $message */
+$user = $this->user;
+
+?>
+
+Вы вошли как <?= $user->getLogin();?> <a href="/BlogController/logout">выйти</a>
+<br><br>
+
+Список сообщений:
+<br><br>
+
+<?php if($messages = $this->messages): ?>
+    <?php foreach ($messages as $message): ?>
+        <div class="message">
+            id: <?=$message->getId();?>
+
+            Text: <input class="text"  type="text" id="user_text_<?=$message->getText();?>" value="<?=htmlspecialchars($message->getText());?>">
+            image: <input class="image" type="text" id="user_image_<?=$message->getImage();?>" value="<?=htmlspecialchars($message->getImage());?>">
+            <br>
+
+            <input type="button" onclick="deleteUserMessage(<?=$message->getId();?>);" value="Удалить">
+        </div>
+    <?php endforeach; ?>
+<?php else: ?>
+    Сообщений пока нет
+<?php endif; ?>
+<script>
+    function deleteUserMessage(messageId) {
+
+        $.post(
+            '/admin/deleteUserMessage',
+            {
+                id: messageId
+            },
+            function (r) {
+                console.log(r);
+            }
+        );
+    }
+
+
+</script>
+<br>
+<br>
+Добавить сообщение
+<form enctype="multipart/form-data" action="/admin/addMessage" method="post">
+    <label>
+        <textarea style="width: 250px; height: 150px;" type="text" value="" name="text"></textarea>
+    </label><br><br>
+    Изображение: <input type="file" name="image"><br>
+    <input type="submit" value="Отправить">
+    <button name="button" value="">
+        <a href="/BlogController/logout">Выйти</a>
+    </button>
+</form>
+<br>
+
+

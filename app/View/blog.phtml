@@ -17,11 +17,18 @@
         <div class="col-sm">
             <div>Список сообщений:</div>
         <?php
-        /** @var $message \App\Model\Message */
-        /** @var $user \App\Model\User */
+        /** @var $message Message */
+        /** @var $user User */
+
+        use App\Model\Eloquent\Message;
+        use App\Model\Eloquent\User;
+
         $user = $this->user;
+        $message = $this->message;
+
 
         ?>
+
         <?php if($messages = $this->messages): ?>
             <?php foreach ($messages as $message): ?>
             <div>
@@ -46,7 +53,9 @@
             <?php endif; ?>
             Добавить сообщение
             <form enctype="multipart/form-data" action="/BlogController/addMessage" method="post">
-                <textarea style="width: 250px; height: 150px;" type="text" value="" name="text"></textarea><br><br>
+                <label>
+                    <textarea style="width: 250px; height: 150px;" type="text" value="" name="text"></textarea>
+                </label><br><br>
                 Изображение: <input type="file" name="image"><br>
                 <input type="submit" value="Отправить">
                 <button name="button" value="">

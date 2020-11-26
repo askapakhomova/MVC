@@ -6,4 +6,4 @@ const DB_NAME = 'users';
 const DB_USER = 'root';
 const DB_PASSWORD = 'root';
 
-const ADMIN_IDS = [8];
+const ADMIN_IDS = [5];

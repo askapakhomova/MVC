@@ -1,24 +1,32 @@
 <?php
 namespace App\Controller;
 
-use App\Model\User;
+use App\Model\Eloquent\User;
 use Core\AbstractController;
 
 class UserController extends AbstractController
 {
     public function index()
     {
-        if ($this->getUser()) {
-            $this->redirect('/blog');
-
+        if ($this -> getUser()) {
+            $this -> redirect('/blog');
         }
+
+        if ($_SERVER['REQUEST_URI'] == "/register") {
+            return $this -> view -> render(
+                'register.phtml');
+        }
+        if ($_SERVER['REQUEST_URI'] == "/login") {
             return $this -> view -> render(
                 'login.phtml',
                 [
                     'title' => 'Главная',
-                    'user' => $this -> getUser(),
+                    'user' => $this -> getUserId(),
                 ]
             );
+        }
+        $this -> redirect('/login');
+
     }
 
     public function auth()
@@ -72,6 +80,7 @@ class UserController extends AbstractController
             ];
             $user = new User($data);
             $user -> save();
+
             $this -> session -> authUser($user -> getId());
             $this -> redirect('/blog');
         }

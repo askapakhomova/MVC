@@ -3,7 +3,7 @@
 
 namespace App\Controller;
 
-use App\Model\Message;
+use App\Model\Eloquent\Message;
 use Core\AbstractController;
 
 class ApiController extends AbstractController

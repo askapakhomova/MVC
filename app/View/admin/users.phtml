@@ -1,0 +1,105 @@
+
+<style>
+    .user { margin: 5px 0 0 5px; border: 1px solid grey; width: 850px; min-height: 100px;}
+    .author { margin-left: 10px; }
+    .text { padding-left: 15px; padding-top: 15px; }
+    .date {color: grey; font-size: 11px;}
+    .admin a { color: #46468b; float: right; padding-right: 15px; }
+</style>
+
+<script src="/js/jquery.js">
+
+</script>
+
+<?php
+        /** @var App\Model\Eloquent\User $user  */
+        /** @var App\Model\Eloquent\Message $message */
+    $user = $this->user;
+
+?>
+
+Вы вошли как <?= $user->getLogin();?> <a href="/BlogController/logout">выйти</a>
+<br><br>
+
+Список пользователей:
+<br><br>
+
+<?php if($users = $this->users): ?>
+    <?php foreach ($users as $user): ?>
+        <div class="user">
+   id: <?=$user->getId();?>
+   login: <input type="text" id="user_login_<?=$user->getId();?>" value="<?=htmlspecialchars($user->getLogin());?>">
+   email: <input type="text" id="user_email_<?=$user->getId();?>" value="<?=htmlspecialchars($user->getEmail());?>">
+   password: <input type="text" id="user_password_<?=$user->getId();?>">
+            <br>
+          <input type="button" onclick="saveUser(<?=$user->getId();?>);" value="Сохранить">
+
+          <input type="button" onclick="deleteUser(<?=$user->getId();?>);" value="Удалить">
+        </div>
+    <?php endforeach; ?>
+<?php else: ?>
+    Сообщений пока нет
+<?php endif; ?>
+<script>
+    function saveUser(userId)
+    {
+        $.post(
+            '/admin/saveUser',
+            {
+                id: userId,
+                login: $('#user_login_' + userId).val(),
+                email: $('#user_email_' + userId).val(),
+                password: $('#user_password_' + userId).val(),
+            },
+            function (r) {
+                console.log(r);
+            }
+        );
+    }
+
+    function deleteUser(userId) {
+
+        $.post(
+            '/admin/deleteUser',
+            {
+                id: userId
+            },
+            function (r) {
+                console.log(r);
+            }
+        );
+    }
+
+    function addUser()
+    {
+        $.post(
+            '/admin/addUser',
+            {
+                login: $('#user_login').val(),
+                email: $('#user_email').val(),
+                password: $('#user_password').val()
+            },
+            function (r) {
+                if (r.error) {
+                    $('#resp').html('<span style="color:red">' + r.error + '</span>');
+                } else {
+                    $('#resp').html('<span style="color:green">' + r.result + '</span>');
+                    location.reload();
+                }
+            }
+        );
+    }
+
+</script>
+<br>
+<br>
+Добавить пользователя
+
+login: <input type="text" id="user_login"> <br>
+email: <input type="text" id="user_email"> <br>
+password: <input type="text" id="user_password"> <br>
+
+<input type="button" value="Отправить" onclick="addUser();">
+<div id="resp">
+
+</div>

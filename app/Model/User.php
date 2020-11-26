@@ -38,9 +38,9 @@ class User
     public static function getByIds(array $userIds)
     {
         $db = Db::getInstance();
-        $idsString = implode(',', $userIds);
+        $idsStr = implode(',', $userIds);
         $data = $db->fetchAll(
-            "SELECT * fROM users WHERE id IN($idsString)",
+            "SELECT * fROM users WHERE id IN($idsStr) ",
             __METHOD__
         );
         if (!$data) {

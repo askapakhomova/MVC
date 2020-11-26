@@ -3,7 +3,8 @@
 
 namespace App\Controller;
 
-use App\Model\Message;
+use App\Model\Eloquent\Message;
+
 use Core\AbstractController;
 
 
@@ -19,14 +20,14 @@ class AdminController extends AbstractController
 
     public function deleteMessage()
     {
-        $messageId = (int) $_GET['id'];
+        $messageId = (int) $_POST['id'];
         Message::deleteMessage($messageId);
-        $this->redirect('/blog');
+
     }
 
     public function index()
     {
         return $this->deleteMessage();
-
     }
+
 }
